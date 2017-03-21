@@ -71,12 +71,10 @@ contract Owned {
 contract TaoTokenImplementation is Owned {
     address public trustedContract;
     mapping (address => uint256) balances;         // each address in this contract may have tokens.
-    bytes8 _name = "Soarcoin";                     // name of this contract and investment fund
-    bytes4 _symbol = "SOAR";                       // token symbol
-    uint8 _decimals = 6;                           // decimals (for humans)
+    bytes8 _name = "Tao Token";                     // name of this contract and investment fund
+    bytes4 _symbol = "TAOT";                       // token symbol
+    uint8 _decimals = 18;                          // decimals (for humans) as many as ETH
     uint256 _totalSupply;
-
-    uint8 flag = 0;
 
     event UnauthorizedCall(address from);
 
@@ -92,7 +90,7 @@ contract TaoTokenImplementation is Owned {
         if (msg.sender == _owner) selfdestruct(_owner);
     }
 
-    function SoarCoinImplementation(uint256 initialMint) {
+    function TaoTokenImplementation(uint256 initialMint) {
         _totalSupply = initialMint;
         balances[msg.sender] = initialMint;
     }
@@ -156,16 +154,6 @@ contract TaoTokenImplementation is Owned {
         return 0;
     }
 
-    function stopMint() onlyOwner {
-        flag = 1;
-    }
-
-    function mint(address recipient, uint256 _value) contractOnly(msg.sender)
-    {
-        if (_value <= 0 && flag == 0) throw;
-        balances[recipient] += _value;
-        _totalSupply += _value;
-    }
 }
 
 
@@ -207,7 +195,7 @@ contract TaoToken is Owned, Token {
     }
 
     function mint(uint256 _value) onlyOwner {
-        implementation.mint(_owner, _value);
+        //do nothing we do not mint after the initial supply
     }
 
 /// @param _owner The address from which the balance will be retrieved
